@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Semple AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;
+  --bg2:#111118;
+  --bg3:#1a1a24;
+  --bg4:#222230;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.14);
+  --text:#f0f0f5;
+  --text2:#9999bb;
+  --text3:#5a5a7a;
+  --accent:#7c6af7;
+  --accent2:#9b8af9;
+  --accent-glow:rgba(124,106,247,0.18);
+  --green:#22c55e;
+  --radius:14px;
+  --font:'Inter',sans-serif;
+  --font-brand:'Space Grotesk',sans-serif;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font);display:flex;flex-direction:column}
+
+.topbar{
+  height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;border-bottom:1px solid var(--border);
+  background:rgba(10,10,15,0.9);backdrop-filter:blur(20px);
+  position:relative;z-index:100;flex-shrink:0;
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-logo{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,#7c6af7,#a855f7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#fff;font-weight:700;font-family:var(--font-brand);
+  box-shadow:0 0 16px rgba(124,106,247,0.4);
+}
+.brand-name{font-family:var(--font-brand);font-size:17px;font-weight:600;color:var(--text);letter-spacing:-0.3px}
+.brand-name span{color:var(--accent2)}
+.topbar-center{display:flex;align-items:center;gap:6px}
+.model-pill{
+  display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;
+  background:var(--bg3);border:1px solid var(--border2);
+  font-size:13px;color:var(--text2);
+}
+.model-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.icon-btn{
+  width:34px;height:34px;border-radius:9px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;
+}
+.icon-btn:hover{background:var(--bg3);color:var(--text);border-color:var(--border2)}
+.new-btn{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:9px;
+  background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:500;
+  cursor:pointer;transition:all .2s;font-family:var(--font);
+}
+.new-btn:hover{background:var(--accent2);box-shadow:0 0 16px var(--accent-glow)}
+
+.layout{display:flex;flex:1;overflow:hidden}
+
+.sidebar{
+  width:260px;flex-shrink:0;border-right:1px solid var(--border);
+  background:var(--bg2);display:flex;flex-direction:column;
+  transition:width .3s;overflow:hidden;
+}
+.sidebar.collapsed{width:0}
+.sidebar-inner{width:260px;display:flex;flex-direction:column;height:100%}
+.sidebar-section{padding:16px 14px 8px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
+.chat-list{flex:1;overflow-y:auto;padding:0 8px}
+.chat-item{
+  display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:9px;
+  cursor:pointer;color:var(--text2);font-size:13px;transition:all .15s;margin-bottom:2px;
+}
+.chat-item:hover{background:var(--bg3);color:var(--text)}
+.chat-item.active{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
+.chat-item i{font-size:15px;flex-shrink:0;color:var(--text3)}
+.chat-item.active i{color:var(--accent2)}
+.chat-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.sidebar-footer{padding:12px 8px;border-top:1px solid var(--border)}
+.contact-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px}
+.contact-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;font-family:var(--font-brand)}
+.contact-role{font-size:11px;color:var(--text3);margin-bottom:12px}
+.contact-links{display:flex;flex-direction:column;gap:6px}
+.contact-link{
+  display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);
+  text-decoration:none;padding:6px 8px;border-radius:7px;transition:all .15s;
+}
+.contact-link:hover{background:var(--bg4);color:var(--text)}
+.contact-link i{font-size:14px;width:16px;text-align:center}
+.link-wa i{color:#25D366}
+.link-tg i{color:#0088cc}
+.link-ig i{color:#E1306C}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.messages{flex:1;overflow-y:auto;padding:0;scroll-behavior:smooth}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
+
+.welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100%;padding:40px 24px;text-align:center;
+}
+.welcome-glow{
+  width:80px;height:80px;border-radius:22px;
+  background:linear-gradient(135deg,#7c6af7,#a855f7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;color:#fff;font-weight:700;font-family:var(--font-brand);
+  box-shadow:0 0 40px rgba(124,106,247,0.35);margin-bottom:24px;
+}
+.welcome h1{
+  font-family:var(--font-brand);font-size:28px;font-weight:700;margin-bottom:8px;
+  background:linear-gradient(135deg,#fff 40%,var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.welcome p{color:var(--text2);font-size:15px;max-width:480px;line-height:1.6;margin-bottom:32px}
+.sug-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;width:100%}
+.sug-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;text-align:left;cursor:pointer;transition:all .2s;
+}
+.sug-card:hover{background:var(--bg4);border-color:var(--border2);transform:translateY(-1px)}
+.sug-card-icon{font-size:20px;margin-bottom:8px;color:var(--accent2)}
+.sug-card-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.sug-card-desc{font-size:12px;color:var(--text3);line-height:1.4}
+
+.msg-row{display:flex;gap:14px;padding:20px 24px;max-width:860px;margin:0 auto;width:100%}
+.msg-avatar{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;margin-top:2px}
+.av-user{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}
+.av-ai{background:linear-gradient(135deg,#7c6af7,#a855f7);color:#fff;font-family:var(--font-brand);font-size:12px}
+.msg-body{flex:1;min-width:0}
+.msg-sender{font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase}
+.msg-text{font-size:15px;line-height:1.75;color:var(--text);word-break:break-word}
+.msg-text p{margin-bottom:10px}
+.msg-text p:last-child{margin-bottom:0}
+.msg-text code{background:var(--bg4);border:1px solid var(--border2);border-radius:5px;padding:1px 6px;font-size:13px;font-family:'Courier New',monospace;color:var(--accent2)}
+.msg-text pre{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;overflow-x:auto;margin:10px 0}
+.msg-text pre code{background:none;border:none;padding:0;font-size:13px;color:#c9d1d9}
+.msg-text ul,.msg-text ol{padding-left:20px;margin:8px 0}
+.msg-text li{margin-bottom:4px}
+.msg-text h1,.msg-text h2,.msg-text h3{margin:12px 0 6px;color:var(--text)}
+.msg-actions{display:flex;gap:4px;margin-top:10px;opacity:0;transition:opacity .2s}
+.msg-row:hover .msg-actions{opacity:1}
+.act-btn{
+  background:none;border:1px solid var(--border);border-radius:7px;
+  color:var(--text3);font-size:12px;padding:4px 10px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:all .15s;font-family:var(--font);
+}
+.act-btn:hover{background:var(--bg4);color:var(--text);border-color:var(--border2)}
+
+.typing-dots{display:inline-flex;align-items:center;gap:5px;padding:4px 0}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:tdot 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:scale(.7);opacity:.5}30%{transform:scale(1);opacity:1}}
+
+.input-area{
+  padding:16px 24px 20px;flex-shrink:0;
+  background:linear-gradient(to top,var(--bg) 60%,transparent);
+}
+.input-wrap{
+  max-width:860px;margin:0 auto;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:16px;
+  padding:12px 14px;transition:border-color .2s,box-shadow .2s;
+}
+.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.input-top{display:flex;gap:10px;align-items:flex-end}
+#msg{
+  flex:1;background:none;border:none;outline:none;resize:none;
+  font-size:15px;color:var(--text);font-family:var(--font);
+  line-height:1.55;min-height:24px;max-height:180px;overflow-y:auto;
+}
+#msg::placeholder{color:var(--text3)}
+.send-btn{
+  width:36px;height:36px;border-radius:10px;border:none;flex-shrink:0;
+  background:var(--accent);color:#fff;cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.send-btn:hover{background:var(--accent2);box-shadow:0 0 14px var(--accent-glow)}
+.send-btn:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;box-shadow:none}
+.input-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.input-tools{display:flex;gap:4px}
+.tool-btn{
+  display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;
+  border:1px solid var(--border);background:none;color:var(--text3);
+  font-size:12px;cursor:pointer;font-family:var(--font);transition:all .15s;
+}
+.tool-btn:hover{background:var(--bg4);color:var(--text2);border-color:var(--border2)}
+.input-hint{font-size:11px;color:var(--text3)}
+
+.toast{
+  position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--bg4);border:1px solid var(--border2);border-radius:10px;
+  padding:10px 18px;font-size:13px;color:var(--text);
+  opacity:0;transition:all .3s;pointer-events:none;z-index:999;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:680px){
+  .sidebar{display:none}
+  .sug-grid{grid-template-columns:1fr}
+  .msg-row{padding:16px}
+  .topbar{padding:0 14px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#">
+    <div class="brand-logo">S</div>
+    <span class="brand-name">Semple<span>AI</span></span>
+  </a>
+  <div class="topbar-center">
+    <div class="model-pill">
+      <span class="model-dot"></span>
+      Llama 3.3 · 70B
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="toggleSidebar()" title="Sidebar">
+      <i class="ti ti-layout-sidebar"></i>
+    </button>
+    <button class="new-btn" onclick="newChat()">
+      <i class="ti ti-plus"></i> Yangi chat
+    </button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">Chatlar tarixi</div>
+      <div class="chat-list" id="chatList">
+        <div class="chat-item active">
+          <i class="ti ti-message"></i>
+          <span class="chat-text">Joriy suhbat</span>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="contact-card">
+          <div class="contact-name">MuhammadSafo</div>
+          <div class="contact-role">Yaratuvchi · Dasturchi</div>
+          <div class="contact-links">
+            <a class="contact-link link-wa" href="https://wa.me/998944992905" target="_blank">
+              <i class="ti ti-brand-whatsapp"></i>
+              WhatsApp · +998 94 499 29 05
+            </a>
+            <a class="contact-link link-tg" href="https://t.me/944992905" target="_blank">
+              <i class="ti ti-brand-telegram"></i>
+              Telegram · @944992905
+            </a>
+            <a class="contact-link link-ig" href="https://instagram.com/" target="_blank">
+              <i class="ti ti-brand-instagram"></i>
+              Instagram
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="messages" id="messages">
+      <div class="welcome" id="welcome">
+        <div class="welcome-glow">S</div>
+        <h1>Semple AI ga xush kelibsiz</h1>
+        <p>Har qanday savolingizga javob beraman — dasturlash, matematika, til o'rganish, ijod va yana ko'p narsalar.</p>
+        <div class="sug-grid">
+          <div class="sug-card" onclick="suggest('Python da web scraper yozib ber')">
+            <div class="sug-card-icon"><i class="ti ti-code"></i></div>
+            <div class="sug-card-title">Kod yozish</div>
+            <div class="sug-card-desc">Python, JS, HTML va boshqa tillarda yordam</div>
+          </div>
+          <div class="sug-card" onclick="suggest('Ingliz tilida biznes email yozishga yordam ber')">
+            <div class="sug-card-icon"><i class="ti ti-language"></i></div>
+            <div class="sug-card-title">Til va tarjima</div>
+            <div class="sug-card-desc">Ingliz, rus, o'zbek va boshqa tillarda</div>
+          </div>
+          <div class="sug-card" onclick="suggest('Sun\'iy intellekt nima va u qanday ishlaydi?')">
+            <div class="sug-card-icon"><i class="ti ti-brain"></i></div>
+            <div class="sug-card-title">Bilim va tushuntirish</div>
+            <div class="sug-card-desc">Murakkab mavzularni oddiy tushuntiraman</div>
+          </div>
+          <div class="sug-card" onclick="suggest('Men uchun motivatsion she\'r yoz')">
+            <div class="sug-card-icon"><i class="ti ti-sparkles"></i></div>
+            <div class="sug-card-title">Ijodiy yozuv</div>
+            <div class="sug-card-desc">She'r, hikoya, esse va boshqalar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-wrap">
+        <div class="input-top">
+          <textarea id="msg" rows="1" placeholder="Savolingizni yozing... (Enter — yuborish, Shift+Enter — yangi qator)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="send()">
+            <i class="ti ti-arrow-up"></i>
+          </button>
+        </div>
+        <div class="input-footer">
+          <div class="input-tools">
+            <button class="tool-btn" onclick="clearInput()"><i class="ti ti-trash"></i> Tozalash</button>
+            <button class="tool-btn" onclick="copyLast()"><i class="ti ti-copy"></i> Nusxa</button>
+          </div>
+          <span class="input-hint">Semple AI · MuhammadSafo tomonidan yaratilgan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const messagesEl = document.getElementById('messages');
+const welcomeEl  = document.getElementById('welcome');
+const msgEl      = document.getElementById('msg');
+const sendBtnEl  = document.getElementById('sendBtn');
+const toastEl    = document.getElementById('toast');
+const chatListEl = document.getElementById('chatList');
+
+let history = [
+  {
+    role: 'system',
+    content: `Siz Semple AI — MuhammadSafo tomonidan yaratilgan aqlli yordamchi.
+Qoidalar:
+- Foydalanuvchi o'zbek tilida yozsa → o'zbek tilida javob ber
+- Rus tilida yozsa → rus tilida javob ber
+- Ingliz tilida yozsa → ingliz tilida javob ber
+- Qisqa, aniq, foydali javoblar ber
+- Kod so'ralsa — to'g'ri ishlaydigan kod yoz
+- Markdown formatlashdan foydalanish mumkin`
+  }
+];
+let busy = false;
+let lastAiText = '';
+
+msgEl.addEventListener('input', () => {
+  msgEl.style.height = 'auto';
+  msgEl.style.height = Math.min(msgEl.scrollHeight, 180) + 'px';
+});
+msgEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2200);
+}
+
+function suggest(text) {
+  msgEl.value = text;
+  msgEl.style.height = 'auto';
+  msgEl.style.height = Math.min(msgEl.scrollHeight, 180) + 'px';
+  send();
+}
+
+function newChat() {
+  if (history.length > 1) {
+    const firstMsg = history[1]?.content?.substring(0, 28) || 'Chat';
+    const item = document.createElement('div');
+    item.className = 'chat-item';
+    item.innerHTML = `<i class="ti ti-message"></i><span class="chat-text">${firstMsg}...</span>`;
+    chatListEl.insertBefore(item, chatListEl.firstChild);
+  }
+  history = [history[0]];
+  lastAiText = '';
+  messagesEl.innerHTML = '';
+  messagesEl.appendChild(welcomeEl);
+  welcomeEl.style.display = 'flex';
+  msgEl.value = '';
+  msgEl.style.height = 'auto';
+  busy = false;
+  sendBtnEl.disabled = false;
+}
+
+function clearInput() { msgEl.value = ''; msgEl.style.height = 'auto'; msgEl.focus(); }
+
+function copyLast() {
+  if (!lastAiText) { showToast('Hali javob yo\'q'); return; }
+  navigator.clipboard.writeText(lastAiText).then(() => showToast('Nusxalandi ✓'));
+}
+
+function formatText(t) {
+  // code blocks
+  t = t.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) =>
+    `<pre><code>${escHtml(code.trim())}</code></pre>`);
+  // inline code
+  t = t.replace(/`([^`]+)`/g, (_, c) => `<code>${escHtml(c)}</code>`);
+  // bold
+  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // italic
+  t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // headings
+  t = t.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  t = t.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  t = t.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // lists
+  t = t.replace(/^\- (.+)$/gm, '<li>$1</li>');
+  t = t.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+  // links
+  t = t.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:var(--accent2)">$1</a>');
+  // paragraphs
+  t = t.split(/\n\n+/).map(p => {
+    if (p.startsWith('<h') || p.startsWith('<pre') || p.startsWith('<ul')) return p;
+    return `<p>${p.replace(/\n/g,'<br>')}</p>`;
+  }).join('');
+  return t;
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function addMsg(role, text, isTyping) {
+  welcomeEl.style.display = 'none';
+  const row = document.createElement('div');
+  row.className = 'msg-row';
+  row.innerHTML = `
+    <div class="msg-avatar ${role==='user'?'av-user':'av-ai'}">${role==='user'?'U':'S'}</div>
+    <div class="msg-body">
+      <div class="msg-sender">${role==='user'?'Siz':'Semple AI'}</div>
+      <div class="msg-text">${isTyping?'<div class="typing-dots"><span></span><span></span><span></span></div>':''}</div>
+      ${role==='assistant'?`<div class="msg-actions">
+        <button class="act-btn" onclick="copyMsg(this)"><i class="ti ti-copy"></i> Nusxa</button>
+        <button class="act-btn" onclick="regenMsg()"><i class="ti ti-refresh"></i> Qayta</button>
+      </div>`:''}
+    </div>`;
+  const textEl = row.querySelector('.msg-text');
+  if (!isTyping && text) textEl.innerHTML = formatText(text);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return textEl;
+}
+
+function copyMsg(btn) {
+  const txt = btn.closest('.msg-row').querySelector('.msg-text').innerText;
+  navigator.clipboard.writeText(txt).then(() => showToast('Nusxalandi ✓'));
+}
+
+async function regenMsg() {
+  if (busy || history.length < 3) return;
+  history.pop();
+  const rows = messagesEl.querySelectorAll('.msg-row');
+  rows[rows.length-1]?.remove();
+  await callAI();
+}
+
+async function send() {
+  const text = msgEl.value.trim();
+  if (!text || busy) return;
+  busy = true;
+  sendBtnEl.disabled = true;
+  msgEl.value = '';
+  msgEl.style.height = 'auto';
+  addMsg('user', text);
+  history.push({ role: 'user', content: text });
+  await callAI();
+}
+
+async function callAI() {
+  const typingEl = addMsg('assistant', '', true);
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
+    });
+    if (!res.ok) throw new Error(`Server xatosi: ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message || 'API xatosi');
+    const reply = data.choices?.[0]?.message?.content || 'Javob olinmadi.';
+    typingEl.innerHTML = formatText(reply);
+    lastAiText = reply;
+    history.push({ role: 'assistant', content: reply });
+  } catch(err) {
+    typingEl.innerHTML = `<span style="color:#f87171">❌ ${err.message}</span>`;
+  }
+  busy = false;
+  sendBtnEl.disabled = false;
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  msgEl.focus();
+}
+</script>
+</body>
+</html>

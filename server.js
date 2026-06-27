@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
 
-const GROQ_API_KEY = 'const GROQ_API_KEY = process.env.GROQ_API_KEY;'; // <-- shu yerga kalit qo'ying
+const GROQ_API_KEY = process.env.GROQ_API_KEY; // <-- shu yerga kalit qo'ying
 
 app.post('/api/chat', async (req, res) => {
   try {
